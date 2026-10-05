@@ -27,7 +27,7 @@ const punishments = [
 function showError(title, message) {
   const punishment = punishments[Math.floor(Math.random() * punishments.length)];
   errorTitle.textContent = punishment;
-  errorMessage.textContent = message;
+  errorMessage.textContent = `${title} ${message}`;
   errorOverlay.hidden = false;
 }
 
@@ -42,7 +42,7 @@ function validateHTML(code) {
   ]);
 
   const stack = [];
-  const tagPattern = /<!--[sS]*?-->|<\/?([a-zA-Z][\w-]*)(?:\s[^<>]*?)?\s*\/?>/g;
+  const tagPattern = /<!--[\\s\\S]*?-->|<\/?([a-zA-Z][\w-]*)(?:\s[^<>]*?)?\s*\/?>/g;
   let match;
 
   while ((match = tagPattern.exec(code)) !== null) {
