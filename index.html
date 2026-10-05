@@ -65,6 +65,18 @@
         <div class="preview-label">Preview</div>
         <iframe id="codePreview" title="Your HTML preview" sandbox="allow-scripts"></iframe>
       </div>
+
+      <div class="error-overlay" id="errorOverlay" hidden role="alert">
+        <div class="error-box">
+          <button class="error-close" id="closeError" aria-label="Close error">×</button>
+          <div class="error-icon">!</div>
+          <div>
+            <p class="eyebrow">CODE TEACHER CAUGHT AN ERROR</p>
+            <h3 id="errorTitle">Something broke.</h3>
+            <p id="errorMessage"></p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="section how" id="how">
