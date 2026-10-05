@@ -46,6 +46,25 @@
         </div>
         <button class="button primary" id="lessonButton">Try it</button>
       </div>
+
+      <div class="lesson-playground" id="lessonPlayground" hidden>
+        <div class="playground-copy">
+          <p class="eyebrow">YOUR FIRST CODE</p>
+          <h3>Make your first heading</h3>
+          <p>Change the code, then smash <b>Run code</b>. Break it. Fix it. That's literally the point.</p>
+        </div>
+
+        <label for="codeEditor">HTML editor</label>
+        <textarea id="codeEditor" spellcheck="false"><h1>Hello, world!</h1></textarea>
+
+        <div class="playground-actions">
+          <button class="button primary" id="runCode">Run code</button>
+          <button class="button secondary" id="resetCode">Reset</button>
+        </div>
+
+        <div class="preview-label">Preview</div>
+        <iframe id="codePreview" title="Your HTML preview" sandbox="allow-scripts"></iframe>
+      </div>
     </section>
 
     <section class="section how" id="how">
