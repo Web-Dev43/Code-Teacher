@@ -11,8 +11,22 @@ const closeError = document.querySelector("#closeError");
 
 const starterCode = "<h1>Hello, world!</h1>";
 
+const punishments = [
+  "bro lock in 😭",
+  "twin... what was that",
+  "bro the code is fighting back",
+  "you had ONE job",
+  "nah bro, run that back",
+  "respectfully, fix your code",
+  "the computer is disappointed in you",
+  "bro is NOT beating the syntax allegations",
+  "lock in before the semicolons start laughing",
+  "we are NOT shipping this"
+];
+
 function showError(title, message) {
-  errorTitle.textContent = title;
+  const punishment = punishments[Math.floor(Math.random() * punishments.length)];
+  errorTitle.textContent = punishment;
   errorMessage.textContent = message;
   errorOverlay.hidden = false;
 }
