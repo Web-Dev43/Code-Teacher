@@ -108,3 +108,42 @@ footer { border-top: 1px solid var(--line); padding: 35px 22px; text-align: cent
   .steps { grid-template-columns: 1fr; }
   .lesson-card { align-items: start; flex-direction: column; }
 }
+
+.lesson-playground {
+  margin-top: 18px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 28px;
+  background: #191919;
+}
+.lesson-playground[hidden] { display: none; }
+.playground-copy { margin-bottom: 22px; }
+.lesson-playground label,
+.preview-label {
+  display: block;
+  margin: 14px 0 8px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+#codeEditor {
+  width: 100%;
+  min-height: 180px;
+  resize: vertical;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px;
+  background: #101010;
+  color: var(--text);
+  font: 15px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  outline: none;
+}
+#codeEditor:focus { border-color: var(--accent); }
+.playground-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+#codePreview {
+  width: 100%;
+  min-height: 180px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: white;
+}
