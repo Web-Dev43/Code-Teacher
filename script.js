@@ -37,6 +37,102 @@ const lesson3Passed = document.querySelector("#lesson3Passed");
 const lesson3SaveStatus = document.querySelector("#lesson3SaveStatus");
 
 const lesson3StarterCode = '<a href="https://example.com">Visit Example</a>';
+
+const lesson4Button = document.querySelector("#lesson4Button");
+const lesson4Playground = document.querySelector("#lesson4Playground");
+const lesson4Editor = document.querySelector("#lesson4Editor");
+const lesson4Preview = document.querySelector("#lesson4Preview");
+const lesson4Run = document.querySelector("#lesson4Run");
+const lesson4Reset = document.querySelector("#lesson4Reset");
+const lesson4Passed = document.querySelector("#lesson4Passed");
+const lesson4SaveStatus = document.querySelector("#lesson4SaveStatus");
+
+const lesson4StarterCode = '<img src="https://picsum.photos/300/180" alt="A random picture">';
+const LESSON4 = "images";
+
+function setLesson4SaveStatus(message) {
+  if (lesson4SaveStatus) lesson4SaveStatus.textContent = message;
+}
+
+function markLesson4Passed() {
+  if (lesson4Passed) lesson4Passed.hidden = false;
+  if (lesson4Button) {
+    lesson4Button.textContent = "Practice";
+    lesson4Button.classList.add("practice-ready");
+  }
+}
+
+function isImageLessonCorrect(code) {
+  return /<img\b[^>]*\bsrc\s*=\s*["'][^"']+["'][^>]*\balt\s*=\s*["'][^"']+["'][^>]*>/i.test(code)
+    || /<img\b[^>]*\balt\s*=\s*["'][^"']+["'][^>]*\bsrc\s*=\s*["'][^"']+["'][^>]*>/i.test(code);
+}
+
+async function saveLesson4Progress(completed = false) {
+  if (!currentUser) {
+    setLesson4SaveStatus("Log in to save your progress.");
+    return;
+  }
+
+  setLesson4SaveStatus("Saving...");
+  const { error } = await supabaseClient.from("code_teacher_lesson_progress").upsert({
+    user_id: currentUser.id,
+    course: COURSE,
+    lesson_slug: LESSON4,
+    completed,
+    code: lesson4Editor.value,
+    updated_at: new Date().toISOString()
+  });
+
+  if (error) {
+    console.error(error);
+    setLesson4SaveStatus("Couldn't save. Try again.");
+    return;
+  }
+
+  setLesson4SaveStatus(completed ? "Saved ✓ Lesson complete." : "Saved ✓");
+}
+
+async function loadLesson4Progress() {
+  if (!currentUser) return;
+  const { data, error } = await supabaseClient
+    .from("code_teacher_lesson_progress")
+    .select("code, completed")
+    .eq("user_id", currentUser.id)
+    .eq("course", COURSE)
+    .eq("lesson_slug", LESSON4)
+    .maybeSingle();
+
+  if (error) return console.error(error);
+
+  if (data?.code) {
+    lesson4Editor.value = data.code;
+    if (data.completed) markLesson4Passed();
+    setLesson4SaveStatus(data.completed ? "Lesson complete ✓" : "Progress loaded ✓");
+    runLesson4();
+  }
+}
+
+function runLesson4() {
+  try {
+    const code = lesson4Editor.value;
+    if (!code.trim()) throw new Error("Your editor is empty. Put some HTML in there and try again.");
+    validateHTML(code);
+    hideError();
+
+    lesson4Preview.srcdoc = code;
+
+    if (isImageLessonCorrect(code)) {
+      markLesson4Passed();
+      saveLesson4Progress(true);
+    } else {
+      saveLesson4Progress(false);
+    }
+  } catch (error) {
+    showError("Your code broke.", error.message || "Something went wrong while running your code.");
+  }
+}
+
+
 const LESSON3 = "links";
 
 const COURSE = "html";
@@ -350,6 +446,20 @@ function runCode() {
   }
 }
 
+
+lesson4Button?.addEventListener("click", () => {
+  lesson4Playground.hidden = false;
+  lesson4Playground.scrollIntoView({ behavior: "smooth", block: "start" });
+  runLesson4();
+});
+
+lesson4Run?.addEventListener("click", runLesson4);
+
+lesson4Reset?.addEventListener("click", () => {
+  lesson4Editor.value = lesson4StarterCode;
+  runLesson4();
+});
+
 lesson3Button?.addEventListener("click", () => {
   lesson3Playground.hidden = false;
   lesson3Playground.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -420,6 +530,7 @@ supabaseClient.auth.onAuthStateChange(async (_event, session) => {
     await ensureProfile(currentUser);
     await loadLessonProgress();
     await loadLesson3Progress();
+    await loadLesson4Progress();
   }
 });
 
