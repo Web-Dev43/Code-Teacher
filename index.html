@@ -133,6 +133,55 @@
         <iframe id="lesson3Preview" title="Your HTML preview" sandbox="allow-scripts"></iframe>
       </div>
 
+
+      <div class="lesson-card lesson-card-next" id="lesson4Card">
+        <div>
+          <span class="lesson-number">04</span>
+          <h3>Images: <code>&lt;img&gt;</code></h3>
+          <p>Images put actual pictures on your page. Learn <b>src</b> for the image URL and <b>alt</b> for a description.</p>
+        </div>
+        <button class="button primary" id="lesson4Button">Try it</button>
+      </div>
+
+      <div class="lesson-playground" id="lesson4Playground" hidden>
+        <div class="playground-copy">
+          <p class="eyebrow">LESSON 04 · HTML</p>
+          <h3>Images: <code>&lt;img&gt;</code></h3>
+          <p>The <b>&lt;img&gt;</b> tag puts an image on your page. Unlike most HTML tags, it doesn't need a closing <b>&lt;/img&gt;</b> tag.</p>
+
+          <div class="heading-demo paragraph-demo">
+            <div><code>src</code><strong>https://picsum.photos/300/180</strong></div>
+            <div><code>alt</code><strong>A random picture</strong></div>
+          </div>
+
+          <div class="tag-breakdown">
+            <p class="eyebrow">THE PATTERN</p>
+            <code>&lt;img src="https://picsum.photos/300/180" alt="A random picture"&gt;</code>
+            <p><span class="tag-part">&lt;img&gt;</span> creates the image. <span class="tag-part">src</span> tells the browser where the image lives. <span class="tag-part">alt</span> describes the image if it can't be seen.</p>
+            <p>Remember: <b>src = source</b>. <b>alt = description</b>.</p>
+          </div>
+
+          <div class="lesson-challenge">
+            <p class="eyebrow">NOW YOU</p>
+            <h4>Put an image on the page</h4>
+            <p>Make an <b>&lt;img&gt;</b> with a <b>src</b> and an <b>alt</b>. Change the image URL or description and see what happens.</p>
+          </div>
+        </div>
+
+        <label for="lesson4Editor">HTML editor</label>
+        <textarea id="lesson4Editor" spellcheck="false">&lt;img src="https://picsum.photos/300/180" alt="A random picture"&gt;</textarea>
+
+        <div class="playground-actions">
+          <button class="button primary" id="lesson4Run">Run code</button>
+          <button class="button secondary" id="lesson4Reset">Reset</button>
+          <span class="lesson-passed" id="lesson4Passed" hidden>✓ Passed</span>
+          <span class="save-status" id="lesson4SaveStatus" aria-live="polite"></span>
+        </div>
+
+        <div class="preview-label">Preview</div>
+        <iframe id="lesson4Preview" title="Your HTML preview" sandbox="allow-scripts"></iframe>
+      </div>
+
       <div class="error-overlay" id="errorOverlay" hidden role="alert">
         <div class="error-box">
           <button class="error-close" id="closeError" aria-label="Close error">×</button>
