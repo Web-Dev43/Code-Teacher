@@ -196,3 +196,84 @@ footer { border-top: 1px solid var(--line); padding: 35px 22px; text-align: cent
   font-size: 30px;
   cursor: pointer;
 }
+
+
+.lesson-playground code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.lesson-explanation {
+  display: grid;
+  gap: 10px;
+  margin: 22px 0;
+}
+
+.concept {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 15px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #151515;
+}
+
+.concept > code {
+  flex: 0 0 auto;
+  padding: 7px 9px;
+  border-radius: 8px;
+  background: #0d0d0d;
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.concept strong,
+.concept span {
+  display: block;
+}
+
+.concept strong { margin-bottom: 3px; }
+.concept span { color: var(--muted); font-size: 14px; }
+
+.tag-breakdown {
+  padding: 18px;
+  border-left: 3px solid var(--accent);
+  background: #141414;
+  border-radius: 0 14px 14px 0;
+}
+
+.tag-breakdown > code {
+  display: block;
+  margin: 10px 0;
+  font-size: 16px;
+  overflow-x: auto;
+}
+
+.tag-breakdown p {
+  color: var(--muted);
+  margin: 8px 0 0;
+}
+
+.tag-part {
+  color: var(--accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.lesson-challenge {
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+}
+
+.lesson-challenge h4 {
+  margin: 5px 0;
+  font-size: 20px;
+}
+
+.lesson-challenge p { color: var(--muted); }
+.lesson-challenge .eyebrow { color: var(--accent); }
+
+@media (max-width: 760px) {
+  .concept { align-items: flex-start; }
+}
