@@ -277,3 +277,39 @@ footer { border-top: 1px solid var(--line); padding: 35px 22px; text-align: cent
 @media (max-width: 760px) {
   .concept { align-items: flex-start; }
 }
+
+
+.heading-demo {
+  display: grid;
+  gap: 8px;
+  margin: 22px 0;
+}
+
+.heading-demo > div {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #151515;
+}
+
+.heading-demo code {
+  width: 48px;
+  color: var(--accent);
+  font: 800 13px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.heading-demo strong { display: block; }
+.demo-h1 { font-size: 28px; }
+.demo-h2 { font-size: 24px; }
+.demo-h3 { font-size: 21px; }
+.demo-h4 { font-size: 18px; }
+.demo-h5 { font-size: 16px; }
+.demo-h6 { font-size: 14px; }
+
+.lesson-playground h4 {
+  margin: 5px 0;
+  font-size: 20px;
+}
