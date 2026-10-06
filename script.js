@@ -9,7 +9,115 @@ const errorTitle = document.querySelector("#errorTitle");
 const errorMessage = document.querySelector("#errorMessage");
 const closeError = document.querySelector("#closeError");
 
-const starterCode = "<h1>Hello, world!</h1>";
+const SUPABASE_URL = "https://fbqzavqemtezakmmysak.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_XRydS36sm1aza5HcrVh9FA_1sFAiCyK";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+const completeLessonButton = document.querySelector("#completeLesson");
+const saveStatus = document.querySelector("#saveStatus");
+const authToggle = document.querySelector("#authToggle");
+const authOverlay = document.querySelector("#authOverlay");
+const closeAuth = document.querySelector("#closeAuth");
+const authEmail = document.querySelector("#authEmail");
+const authPassword = document.querySelector("#authPassword");
+const loginButton = document.querySelector("#loginButton");
+const signupButton = document.querySelector("#signupButton");
+const logoutButton = document.querySelector("#logoutButton");
+const authStatus = document.querySelector("#authStatus");
+
+const starterCode = "<p>Hello, world!</p>";
+const COURSE = "html";
+const LESSON = "paragraphs";
+let currentUser = null;
+
+function setSaveStatus(message) {
+  if (saveStatus) saveStatus.textContent = message;
+}
+
+function setAuthStatus(message) {
+  if (authStatus) authStatus.textContent = message;
+}
+
+async function ensureProfile(user) {
+  const { error } = await supabaseClient.from("code_teacher_profiles").upsert({
+    id: user.id,
+    display_name: user.email?.split("@")[0] || "coder"
+  });
+  if (error) console.error("Profile save failed:", error);
+}
+
+async function saveLessonProgress(completed = false) {
+  if (!currentUser) {
+    setSaveStatus("Log in to save your progress.");
+    return;
+  }
+
+  setSaveStatus("Saving...");
+  const { error } = await supabaseClient.from("code_teacher_lesson_progress").upsert({
+    user_id: currentUser.id,
+    course: COURSE,
+    lesson_slug: LESSON,
+    completed,
+    code: editor.value,
+    updated_at: new Date().toISOString()
+  });
+
+  if (error) {
+    console.error(error);
+    setSaveStatus("Couldn't save. Try again.");
+    return;
+  }
+
+  if (completed) {
+    await supabaseClient.from("code_teacher_course_progress").upsert({
+      user_id: currentUser.id,
+      course: COURSE,
+      current_lesson: LESSON,
+      percent: 100,
+      updated_at: new Date().toISOString()
+    });
+  }
+
+  setSaveStatus(completed ? "Saved ✓ Lesson complete." : "Saved ✓");
+}
+
+async function loadLessonProgress() {
+  if (!currentUser) return;
+  const { data, error } = await supabaseClient
+    .from("code_teacher_lesson_progress")
+    .select("code, completed")
+    .eq("user_id", currentUser.id)
+    .eq("course", COURSE)
+    .eq("lesson_slug", LESSON)
+    .maybeSingle();
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  if (data?.code) {
+    editor.value = data.code;
+    setSaveStatus(data.completed ? "Lesson complete ✓" : "Progress loaded ✓");
+    runCode();
+  }
+}
+
+function openAuth() {
+  authOverlay.hidden = false;
+  const loggedIn = !!currentUser;
+  loginButton.hidden = loggedIn;
+  signupButton.hidden = loggedIn;
+  logoutButton.hidden = !loggedIn;
+  if (loggedIn) authEmail.value = currentUser.email || "";
+  setAuthStatus(loggedIn ? `Logged in as ${currentUser.email}` : "");
+}
+
+function closeAuthModal() {
+  authOverlay.hidden = true;
+}
+
+
 
 const punishments = [
   "bro lock in 😭",
@@ -114,6 +222,7 @@ function runCode() {
     `;
 
     preview.srcdoc = errorReporter + code;
+    saveLessonProgress(false);
   } catch (error) {
     showError("Your code broke.", error.message || "Something went wrong while running your code.");
   }
@@ -126,6 +235,57 @@ lessonButton?.addEventListener("click", () => {
 });
 
 runButton?.addEventListener("click", runCode);
+completeLessonButton?.addEventListener("click", () => saveLessonProgress(true));
+
+authToggle?.addEventListener("click", openAuth);
+closeAuth?.addEventListener("click", closeAuthModal);
+authOverlay?.addEventListener("click", (event) => {
+  if (event.target === authOverlay) closeAuthModal();
+});
+
+signupButton?.addEventListener("click", async () => {
+  const email = authEmail.value.trim();
+  const password = authPassword.value;
+  if (!email || !password) return setAuthStatus("Enter an email and password.");
+  setAuthStatus("Creating account...");
+  const { data, error } = await supabaseClient.auth.signUp({ email, password });
+  if (error) return setAuthStatus(error.message);
+  if (data.user) {
+    await ensureProfile(data.user);
+    setAuthStatus(data.session ? "Account created. You're in." : "Account created. Check your email to confirm it.");
+  }
+});
+
+loginButton?.addEventListener("click", async () => {
+  const email = authEmail.value.trim();
+  const password = authPassword.value;
+  if (!email || !password) return setAuthStatus("Enter an email and password.");
+  setAuthStatus("Logging in...");
+  const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+  if (error) return setAuthStatus(error.message);
+  currentUser = data.user;
+  await ensureProfile(currentUser);
+  await loadLessonProgress();
+  authToggle.textContent = "Account";
+  setAuthStatus(`Logged in as ${currentUser.email}`);
+});
+
+logoutButton?.addEventListener("click", async () => {
+  await supabaseClient.auth.signOut();
+  currentUser = null;
+  authToggle.textContent = "Log in";
+  closeAuthModal();
+  setSaveStatus("Progress stays saved to your account.");
+});
+
+supabaseClient.auth.onAuthStateChange(async (_event, session) => {
+  currentUser = session?.user || null;
+  authToggle.textContent = currentUser ? "Account" : "Log in";
+  if (currentUser) {
+    await ensureProfile(currentUser);
+    await loadLessonProgress();
+  }
+});
 
 resetButton?.addEventListener("click", () => {
   editor.value = starterCode;
