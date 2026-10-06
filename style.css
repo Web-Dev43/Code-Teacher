@@ -313,3 +313,11 @@ footer { border-top: 1px solid var(--line); padding: 35px 22px; text-align: cent
   margin: 5px 0;
   font-size: 20px;
 }
+
+
+.nav-right{display:flex;align-items:center;gap:14px}.auth-toggle{padding:9px 13px;font-size:13px}.save-status{align-self:center;color:var(--muted);font-size:13px}
+.auth-overlay[hidden]{display:none}.auth-overlay{position:fixed;inset:0;z-index:1100;display:grid;place-items:center;padding:22px;background:rgba(0,0,0,.72);backdrop-filter:blur(5px)}
+.auth-box{position:relative;width:min(460px,100%);padding:28px;border:1px solid var(--line);border-radius:22px;background:#1d1d1d;box-shadow:0 20px 70px rgba(0,0,0,.45)}
+.auth-help{color:var(--muted);margin-top:0}.auth-box input{width:100%;margin-top:10px;padding:13px 14px;border:1px solid var(--line);border-radius:12px;background:#101010;color:var(--text);font:inherit;outline:none}.auth-box input:focus{border-color:var(--accent)}
+.auth-actions{display:flex;gap:10px;margin-top:12px}.text-button{margin-top:12px;border:0;background:transparent;color:var(--muted);cursor:pointer;padding:5px 0}.auth-status{min-height:24px;color:var(--muted);font-size:13px;overflow-wrap:anywhere}
+@media(max-width:760px){.nav-right{gap:8px}.nav-link{display:none}.auth-actions{flex-direction:column}}
