@@ -14,6 +14,7 @@ const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_XRydS36sm1aza5HcrVh9FA_1sFAiCyK
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
 const completeLessonButton = document.querySelector("#completeLesson");
+const lessonPassed = document.querySelector("#lessonPassed");
 const saveStatus = document.querySelector("#saveStatus");
 const authToggle = document.querySelector("#authToggle");
 const authOverlay = document.querySelector("#authOverlay");
@@ -29,6 +30,19 @@ const starterCode = "<p>Hello, world!</p>";
 const COURSE = "html";
 const LESSON = "paragraphs";
 let currentUser = null;
+
+function markLessonPassed() {
+  if (lessonPassed) lessonPassed.hidden = false;
+  if (lessonButton) {
+    lessonButton.textContent = "Practice";
+    lessonButton.classList.add("practice-ready");
+  }
+}
+
+function isParagraphLessonCorrect(code) {
+  const matches = [...code.matchAll(/<p(?:\s[^>]*)?>([\\s\\S]*?)<\\/p>/gi)];
+  return matches.some(match => match[1].replace(/<[^>]*>/g, "").trim().length > 0);
+}
 
 function setSaveStatus(message) {
   if (saveStatus) saveStatus.textContent = message;
@@ -98,6 +112,7 @@ async function loadLessonProgress() {
 
   if (data?.code) {
     editor.value = data.code;
+    if (data.completed) markLessonPassed();
     setSaveStatus(data.completed ? "Lesson complete ✓" : "Progress loaded ✓");
     runCode();
   }
@@ -190,6 +205,15 @@ function validateHTML(code) {
   }
 }
 
+let completionSaving = false;
+
+async function awaitLessonCompletion() {
+  if (completionSaving || !currentUser) return;
+  completionSaving = true;
+  await saveLessonProgress(true);
+  completionSaving = false;
+}
+
 function runCode() {
   try {
     const code = editor.value;
@@ -200,6 +224,11 @@ function runCode() {
 
     validateHTML(code);
     hideError();
+
+    if (isParagraphLessonCorrect(code)) {
+      markLessonPassed();
+      awaitLessonCompletion();
+    }
 
     const errorReporter = `
       <script>
@@ -235,7 +264,7 @@ lessonButton?.addEventListener("click", () => {
 });
 
 runButton?.addEventListener("click", runCode);
-completeLessonButton?.addEventListener("click", () => saveLessonProgress(true));
+
 
 authToggle?.addEventListener("click", openAuth);
 closeAuth?.addEventListener("click", closeAuthModal);
