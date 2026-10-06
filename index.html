@@ -50,46 +50,29 @@
       <div class="lesson-playground" id="lessonPlayground" hidden>
         <div class="playground-copy">
           <p class="eyebrow">LESSON 01 · HTML</p>
-          <h3>So what the hell is <code>&lt;h1&gt;</code>?</h3>
-          <p>Before we make you type anything, here's the idea. <b>HTML tags tell the browser what something is.</b></p>
+          <h3>Headings: <code>&lt;h1&gt;</code> to <code>&lt;h6&gt;</code></h3>
+          <p>Headings organize a page. The number tells you the heading's level. Start with <b>&lt;h1&gt;</b> for the main heading, then use <b>&lt;h2&gt;</b> for sections and <b>&lt;h3&gt;</b> for things inside those sections.</p>
 
-          <div class="lesson-explanation">
-            <div class="concept">
-              <code>&lt;h1&gt;</code>
-              <div>
-                <strong>Heading 1</strong>
-                <span>The biggest, most important heading on the page.</span>
-              </div>
-            </div>
-
-            <div class="concept">
-              <code>&lt;p&gt;</code>
-              <div>
-                <strong>Paragraph</strong>
-                <span>Used for normal blocks of text.</span>
-              </div>
-            </div>
-
-            <div class="concept">
-              <code>&lt;button&gt;</code>
-              <div>
-                <strong>Button</strong>
-                <span>Creates a button the user can interact with.</span>
-              </div>
-            </div>
+          <div class="heading-demo">
+            <div><code>&lt;h1&gt;</code><strong class="demo-h1">Main heading</strong></div>
+            <div><code>&lt;h2&gt;</code><strong class="demo-h2">Section heading</strong></div>
+            <div><code>&lt;h3&gt;</code><strong class="demo-h3">Subsection heading</strong></div>
+            <div><code>&lt;h4&gt;</code><strong class="demo-h4">Smaller heading</strong></div>
+            <div><code>&lt;h5&gt;</code><strong class="demo-h5">Even smaller heading</strong></div>
+            <div><code>&lt;h6&gt;</code><strong class="demo-h6">Smallest heading</strong></div>
           </div>
 
           <div class="tag-breakdown">
-            <p class="eyebrow">BREAKING DOWN THE TAG</p>
+            <p class="eyebrow">THE PATTERN</p>
             <code>&lt;h1&gt;Hello, world!&lt;/h1&gt;</code>
-            <p><span class="tag-part">&lt;h1&gt;</span> opens the heading. <span class="tag-part">Hello, world!</span> is the content. <span class="tag-part">&lt;/h1&gt;</span> closes it.</p>
-            <p>Most HTML elements work like a sandwich: <b>open → content → close.</b></p>
+            <p><span class="tag-part">&lt;h1&gt;</span> opens the heading. <span class="tag-part">Hello, world!</span> is the text. <span class="tag-part">&lt;/h1&gt;</span> closes it.</p>
+            <p>Most HTML elements work like this: <b>open → content → close.</b></p>
           </div>
 
           <div class="lesson-challenge">
             <p class="eyebrow">NOW YOU</p>
-            <h4>Change the heading text</h4>
-            <p>Don't worry about writing the HTML from scratch yet. Change <b>Hello, world!</b> to your own words, then hit <b>Run code</b>.</p>
+            <h4>Make your own heading</h4>
+            <p>Change the text inside the <b>&lt;h1&gt;</b>, then hit <b>Run code</b>. After that, try changing it to <b>&lt;h2&gt;</b> and see what happens.</p>
           </div>
         </div>
 
@@ -103,7 +86,7 @@
 
         <div class="preview-label">Preview</div>
         <iframe id="codePreview" title="Your HTML preview" sandbox="allow-scripts"></iframe>
-      </div>
+      </div>/div>
 
       <div class="error-overlay" id="errorOverlay" hidden role="alert">
         <div class="error-box">
