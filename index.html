@@ -84,6 +84,55 @@
         <iframe id="codePreview" title="Your HTML preview" sandbox="allow-scripts"></iframe>
       </div>
 
+
+      <div class="lesson-card lesson-card-next" id="lesson3Card">
+        <div>
+          <span class="lesson-number">03</span>
+          <h3>Links: <code>&lt;a&gt;</code></h3>
+          <p>Links let people move around the web. Learn how the <b>&lt;a&gt;</b> tag connects your page to another page or website.</p>
+        </div>
+        <button class="button primary" id="lesson3Button">Try it</button>
+      </div>
+
+      <div class="lesson-playground" id="lesson3Playground" hidden>
+        <div class="playground-copy">
+          <p class="eyebrow">LESSON 03 · HTML</p>
+          <h3>Links: <code>&lt;a&gt;</code></h3>
+          <p>The <b>&lt;a&gt;</b> tag creates a link. The <b>href</b> attribute tells the browser where the link should go.</p>
+
+          <div class="heading-demo paragraph-demo">
+            <div><code>&lt;a&gt;</code><strong>Click me</strong></div>
+            <div><code>href</code><strong>https://example.com</strong></div>
+          </div>
+
+          <div class="tag-breakdown">
+            <p class="eyebrow">THE PATTERN</p>
+            <code>&lt;a href="https://example.com"&gt;Visit Example&lt;/a&gt;</code>
+            <p><span class="tag-part">&lt;a&gt;</span> opens the link. <span class="tag-part">href</span> says where it goes. <span class="tag-part">Visit Example</span> is what the user clicks. <span class="tag-part">&lt;/a&gt;</span> closes it.</p>
+            <p>Think of <b>href</b> as the link's destination.</p>
+          </div>
+
+          <div class="lesson-challenge">
+            <p class="eyebrow">NOW YOU</p>
+            <h4>Make your own link</h4>
+            <p>Create an <b>&lt;a&gt;</b> tag with an <b>href</b> and some clickable text. Then hit <b>Run code</b>.</p>
+          </div>
+        </div>
+
+        <label for="lesson3Editor">HTML editor</label>
+        <textarea id="lesson3Editor" spellcheck="false">&lt;a href="https://example.com"&gt;Visit Example&lt;/a&gt;</textarea>
+
+        <div class="playground-actions">
+          <button class="button primary" id="lesson3Run">Run code</button>
+          <button class="button secondary" id="lesson3Reset">Reset</button>
+          <span class="lesson-passed" id="lesson3Passed" hidden>✓ Passed</span>
+          <span class="save-status" id="lesson3SaveStatus" aria-live="polite"></span>
+        </div>
+
+        <div class="preview-label">Preview</div>
+        <iframe id="lesson3Preview" title="Your HTML preview" sandbox="allow-scripts"></iframe>
+      </div>
+
       <div class="error-overlay" id="errorOverlay" hidden role="alert">
         <div class="error-box">
           <button class="error-close" id="closeError" aria-label="Close error">×</button>
