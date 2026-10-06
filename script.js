@@ -251,7 +251,7 @@ function runCode() {
     `;
 
     preview.srcdoc = errorReporter + code;
-    saveLessonProgress(false);
+    if (!isParagraphLessonCorrect(code)) saveLessonProgress(false);
   } catch (error) {
     showError("Your code broke.", error.message || "Something went wrong while running your code.");
   }
