@@ -13,7 +13,7 @@
       <span class="brand-mark">CT</span>
       <span>Code Teacher</span>
     </a>
-    <a class="nav-link" href="#lessons">Lessons</a>
+    <div class="nav-right"><a class="nav-link" href="#lessons">Lessons</a><button class="button secondary auth-toggle" id="authToggle">Log in</button></div>
   </header>
 
   <main>
@@ -77,7 +77,7 @@
 
         <div class="playground-actions">
           <button class="button primary" id="runCode">Run code</button>
-          <button class="button secondary" id="resetCode">Reset</button>
+          <button class="button secondary" id="resetCode">Reset</button><button class="button secondary" id="completeLesson">Mark lesson complete</button><span class="save-status" id="saveStatus" aria-live="polite"></span>
         </div>
 
         <div class="preview-label">Preview</div>
@@ -109,6 +109,24 @@
   </main>
 
   <footer>made for people who looked at free coding courses and immediately panicked</footer>
-  <script src="script.js?v=4"></script>
+  <div class="auth-overlay" id="authOverlay" hidden>
+  <div class="auth-box">
+    <button class="error-close" id="closeAuth" aria-label="Close login">×</button>
+    <p class="eyebrow">SAVE YOUR PROGRESS</p>
+    <h3>Make an account</h3>
+    <p class="auth-help">Log in so Code Teacher can remember your lessons and code across devices.</p>
+    <input id="authEmail" type="email" autocomplete="email" placeholder="Email">
+    <input id="authPassword" type="password" autocomplete="current-password" placeholder="Password">
+    <div class="auth-actions">
+      <button class="button primary" id="loginButton">Log in</button>
+      <button class="button secondary" id="signupButton">Sign up</button>
+    </div>
+    <button class="text-button" id="logoutButton" hidden>Log out</button>
+    <p class="auth-status" id="authStatus" aria-live="polite"></p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="script.js?v=5"></script>
 </body>
 </html>
