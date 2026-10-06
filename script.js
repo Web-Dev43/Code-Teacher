@@ -27,6 +27,18 @@ const logoutButton = document.querySelector("#logoutButton");
 const authStatus = document.querySelector("#authStatus");
 
 const starterCode = "<p>Hello, world!</p>";
+const lesson3Button = document.querySelector("#lesson3Button");
+const lesson3Playground = document.querySelector("#lesson3Playground");
+const lesson3Editor = document.querySelector("#lesson3Editor");
+const lesson3Preview = document.querySelector("#lesson3Preview");
+const lesson3Run = document.querySelector("#lesson3Run");
+const lesson3Reset = document.querySelector("#lesson3Reset");
+const lesson3Passed = document.querySelector("#lesson3Passed");
+const lesson3SaveStatus = document.querySelector("#lesson3SaveStatus");
+
+const lesson3StarterCode = '<a href="https://example.com">Visit Example</a>';
+const LESSON3 = "links";
+
 const COURSE = "html";
 const LESSON = "paragraphs";
 let currentUser = null;
@@ -42,6 +54,87 @@ function markLessonPassed() {
 function isParagraphLessonCorrect(code) {
   const matches = [...code.matchAll(/<p(?:\s[^>]*)?>([\\s\\S]*?)<\\/p>/gi)];
   return matches.some(match => match[1].replace(/<[^>]*>/g, "").trim().length > 0);
+}
+
+function setLesson3SaveStatus(message) {
+  if (lesson3SaveStatus) lesson3SaveStatus.textContent = message;
+}
+
+function markLesson3Passed() {
+  if (lesson3Passed) lesson3Passed.hidden = false;
+  if (lesson3Button) {
+    lesson3Button.textContent = "Practice";
+    lesson3Button.classList.add("practice-ready");
+  }
+}
+
+function isLinkLessonCorrect(code) {
+  return /<a\b[^>]*\bhref\s*=\s*["'][^"']+["'][^>]*>\s*[^<]+\s*<\/a>/i.test(code);
+}
+
+async function saveLesson3Progress(completed = false) {
+  if (!currentUser) {
+    setLesson3SaveStatus("Log in to save your progress.");
+    return;
+  }
+
+  setLesson3SaveStatus("Saving...");
+  const { error } = await supabaseClient.from("code_teacher_lesson_progress").upsert({
+    user_id: currentUser.id,
+    course: COURSE,
+    lesson_slug: LESSON3,
+    completed,
+    code: lesson3Editor.value,
+    updated_at: new Date().toISOString()
+  });
+
+  if (error) {
+    console.error(error);
+    setLesson3SaveStatus("Couldn't save. Try again.");
+    return;
+  }
+
+  setLesson3SaveStatus(completed ? "Saved ✓ Lesson complete." : "Saved ✓");
+}
+
+async function loadLesson3Progress() {
+  if (!currentUser) return;
+  const { data, error } = await supabaseClient
+    .from("code_teacher_lesson_progress")
+    .select("code, completed")
+    .eq("user_id", currentUser.id)
+    .eq("course", COURSE)
+    .eq("lesson_slug", LESSON3)
+    .maybeSingle();
+
+  if (error) return console.error(error);
+
+  if (data?.code) {
+    lesson3Editor.value = data.code;
+    if (data.completed) markLesson3Passed();
+    setLesson3SaveStatus(data.completed ? "Lesson complete ✓" : "Progress loaded ✓");
+    runLesson3();
+  }
+}
+
+function runLesson3() {
+  try {
+    const code = lesson3Editor.value;
+    if (!code.trim()) throw new Error("Your editor is empty. Put some HTML in there and try again.");
+    validateHTML(code);
+    hideError();
+
+    lesson3Preview.srcdoc = code;
+
+    if (isLinkLessonCorrect(code)) {
+      markLesson3Passed();
+      saveLesson3Progress(true);
+    } else {
+      saveLesson3Progress(false);
+    }
+  } catch (error) {
+    showError("Your code broke.", error.message || "Something went wrong while running your code.");
+  }
 }
 
 function setSaveStatus(message) {
@@ -257,6 +350,19 @@ function runCode() {
   }
 }
 
+lesson3Button?.addEventListener("click", () => {
+  lesson3Playground.hidden = false;
+  lesson3Playground.scrollIntoView({ behavior: "smooth", block: "start" });
+  runLesson3();
+});
+
+lesson3Run?.addEventListener("click", runLesson3);
+
+lesson3Reset?.addEventListener("click", () => {
+  lesson3Editor.value = lesson3StarterCode;
+  runLesson3();
+});
+
 lessonButton?.addEventListener("click", () => {
   playground.hidden = false;
   playground.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -313,6 +419,7 @@ supabaseClient.auth.onAuthStateChange(async (_event, session) => {
   if (currentUser) {
     await ensureProfile(currentUser);
     await loadLessonProgress();
+    await loadLesson3Progress();
   }
 });
 
